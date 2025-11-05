@@ -43,7 +43,12 @@ async def find_user(email:EmailStr,session:SessionDep):
     data = await session.execute(stmt)
     res = data.scalar_one_or_none()
     if res:
-        return data.scalar_one_or_none()
+        return {
+            "id": res.id,
+            "name": res.name,
+            "age": res.age,
+            "email": res.email
+        }
     else:
         return {'message': f'User with this email does not exist'}
 @app.post('/add_user')
