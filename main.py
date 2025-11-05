@@ -93,6 +93,12 @@ async def login_user( session:SessionDep,user_password:str,user_name:str|None = 
                 return {'message': 'Login Failed',}
         else:
             return {'message': 'Login Failed',}
+@app.get('/all_users')
+async def get_all_users(session:SessionDep):
+    stmt = select(UsersModel)
+    data = await session.execute(stmt)
+    res = data.all()
+    return res
 
 
 
