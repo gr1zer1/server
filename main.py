@@ -94,11 +94,20 @@ async def login_user( session:SessionDep,user_password:str,user_name:str|None = 
         else:
             return {'message': 'Login Failed',}
 @app.get('/all_users')
-async def get_all_users(session:SessionDep):
+async def get_all_users(session: SessionDep):
     stmt = select(UsersModel)
-    data = await session.execute(stmt)
-    res = data.all()
-    return res
+    result = await session.execute(stmt)
+    users = result.scalars().all()  # Получаем список UsersModel
+
+    return [
+        {
+            "id": user.id,
+            "name": user.name,
+            "age": user.age,
+            "email": user.email
+        }
+        for user in users
+    ]
 
 
 
